@@ -12,6 +12,9 @@
 		0B0E26F81E5C916600C9F8CC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0B0E26F61E5C916600C9F8CC /* Main.storyboard */; };
 		0B0E26FA1E5C916600C9F8CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0B0E26F91E5C916600C9F8CC /* Assets.xcassets */; };
 		0B0E26FD1E5C916600C9F8CC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0B0E26FB1E5C916600C9F8CC /* LaunchScreen.storyboard */; };
+		0B9071C61E5DB50300A7CE05 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9071C51E5DB50300A7CE05 /* Constants.swift */; };
+		0B9071C81E5DC0C700A7CE05 /* CurrentWeather.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9071C71E5DC0C700A7CE05 /* CurrentWeather.swift */; };
+		0B9071CB1E5DFEFB00A7CE05 /* Forecast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9071CA1E5DFEFB00A7CE05 /* Forecast.swift */; };
 		CD31CA1493A486F3A91A0068 /* Pods_WeatherForecast.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D06516722224C9EA64B872A2 /* Pods_WeatherForecast.framework */; };
 /* End PBXBuildFile section */
 
@@ -23,6 +26,9 @@
 		0B0E26F91E5C916600C9F8CC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0B0E26FC1E5C916600C9F8CC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0B0E26FE1E5C916600C9F8CC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0B9071C51E5DB50300A7CE05 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		0B9071C71E5DC0C700A7CE05 /* CurrentWeather.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentWeather.swift; sourceTree = "<group>"; };
+		0B9071CA1E5DFEFB00A7CE05 /* Forecast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Forecast.swift; sourceTree = "<group>"; };
 		39E5209CEB99DFD394335A93 /* Pods-WeatherForecast.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeatherForecast.release.xcconfig"; path = "Pods/Target Support Files/Pods-WeatherForecast/Pods-WeatherForecast.release.xcconfig"; sourceTree = "<group>"; };
 		C0116F49E67DE5ED54017596 /* Pods-WeatherForecast.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeatherForecast.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WeatherForecast/Pods-WeatherForecast.debug.xcconfig"; sourceTree = "<group>"; };
 		D06516722224C9EA64B872A2 /* Pods_WeatherForecast.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WeatherForecast.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -61,6 +67,7 @@
 		0B0E26F11E5C916600C9F8CC /* WeatherForecast */ = {
 			isa = PBXGroup;
 			children = (
+				0B9071C91E5DCF8F00A7CE05 /* Model */,
 				0B0E26F21E5C916600C9F8CC /* AppDelegate.swift */,
 				0B0E26F41E5C916600C9F8CC /* WeatherVC.swift */,
 				0B0E26F61E5C916600C9F8CC /* Main.storyboard */,
@@ -69,6 +76,16 @@
 				0B0E26FE1E5C916600C9F8CC /* Info.plist */,
 			);
 			path = WeatherForecast;
+			sourceTree = "<group>";
+		};
+		0B9071C91E5DCF8F00A7CE05 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				0B9071C51E5DB50300A7CE05 /* Constants.swift */,
+				0B9071C71E5DC0C700A7CE05 /* CurrentWeather.swift */,
+				0B9071CA1E5DFEFB00A7CE05 /* Forecast.swift */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 		6D531E4B1C5F1D4BA8F8C00C /* Frameworks */ = {
@@ -213,6 +230,9 @@
 			files = (
 				0B0E26F51E5C916600C9F8CC /* WeatherVC.swift in Sources */,
 				0B0E26F31E5C916600C9F8CC /* AppDelegate.swift in Sources */,
+				0B9071C81E5DC0C700A7CE05 /* CurrentWeather.swift in Sources */,
+				0B9071C61E5DB50300A7CE05 /* Constants.swift in Sources */,
+				0B9071CB1E5DFEFB00A7CE05 /* Forecast.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
