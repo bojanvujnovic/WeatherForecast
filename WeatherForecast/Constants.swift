@@ -8,7 +8,8 @@
 
 import Foundation
 
-typealias DownloadComplete = () -> ()
+typealias DownloadComplete = (Double, Double) -> ()
+typealias ForecastDownloadComplete = () -> ()
 
 struct WeatherAPI {
     private static let baseURL = "http://api.openweathermap.org/data/2.5"

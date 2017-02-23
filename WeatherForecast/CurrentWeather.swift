@@ -75,7 +75,7 @@ class CurrentWeather {
                         }
                     }
                 }
-                completed()
+                completed(latitude, longitude)
             })
             
             

@@ -30,23 +30,28 @@ class WeatherVC: UIViewController, UITableViewDataSource, UITableViewDelegate, U
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        //Table Data Source
         self.tableView.dataSource = self
         self.tableView.delegate = self
-        
+        //Location Manager
         self.locationManager.delegate = self
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        self.locationManager.requestWhenInUseAuthorization()
+        self.locationManager.startMonitoringSignificantLocationChanges()
         
         segment.selectedSegmentIndex = 1
+        //Weather Manager
         self.weatherManager = WeatherManager()
         self.weatherManager.currentWeather = CurrentWeather()
-        self.weatherManager.currentWeather.downloadWeatherDetails(latitude: 44.83, longitude: 20.41) {
+        self.weatherManager.currentWeather.downloadWeatherDetails(latitude: 51.50, longitude: 0.13) { [unowned self] (lat, long) in
+            self.weatherManager.downloadForecastData(table: self.tableView, days: WeatherAPI.days, lat: lat, long: long, completed: { [unowned self] in
+                //Setup UI to load downloaded data
+                DispatchQueue.main.async { [unowned self] in
+                    self.updateMainUI()                }
+                print("Downloaded Forecast for \(self.weatherManager.forecastsCount) days successfully.")
+            })
             print("Downloaded Current Weather data  successfully.")
         }
-        self.weatherManager.downloadForecastData(table: tableView, days: WeatherAPI.days, lat: 44.83, long: 20.41, completed: {
-            //Setup UI to load downloaded data
-            DispatchQueue.main.async { [unowned self] in
-                self.updateMainUI()                }
-            print("Downloaded Forecast for \(self.weatherManager.forecastsCount) days successfully.")
-        })
         
     }
     
@@ -60,7 +65,7 @@ class WeatherVC: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         scrollView.bounces = (scrollView.contentOffset.y > 0)
     }
     
-    
+    //A Segment has been chosen
     @IBAction func segmentPressed(_ sender: UISegmentedControl) {
         weatherManager.forecasts = []
         var numberOfDays: Int
@@ -94,7 +99,7 @@ class WeatherVC: UIViewController, UITableViewDataSource, UITableViewDelegate, U
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 80
     }
-    
+    //Updates Current Weather View
     func updateMainUI()  {
         dateLabel.text = weatherManager.currentWeather.date
         currentTempLabel.text = "\(weatherManager.currentWeather.currentTemp) °C"

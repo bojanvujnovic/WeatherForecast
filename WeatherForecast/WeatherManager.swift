@@ -51,7 +51,7 @@ class WeatherManager {
         }
     }
     
-    func downloadForecastData(table: UITableView, days: Int, lat: Double, long: Double, completed: @escaping DownloadComplete)  {
+    func downloadForecastData(table: UITableView, days: Int, lat: Double, long: Double, completed: @escaping ForecastDownloadComplete)  {
         //Downloading forecast weather data for TableView
         //Alamofire download
         let weatherAPI = WeatherAPI()
