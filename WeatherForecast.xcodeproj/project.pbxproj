@@ -69,6 +69,7 @@
 		0B0E26F11E5C916600C9F8CC /* WeatherForecast */ = {
 			isa = PBXGroup;
 			children = (
+				0B69DCF51E5ED77200E647F0 /* View */,
 				0B9071C91E5DCF8F00A7CE05 /* Model */,
 				0B0E26F21E5C916600C9F8CC /* AppDelegate.swift */,
 				0B0E26F41E5C916600C9F8CC /* WeatherVC.swift */,
@@ -76,9 +77,16 @@
 				0B0E26F91E5C916600C9F8CC /* Assets.xcassets */,
 				0B0E26FB1E5C916600C9F8CC /* LaunchScreen.storyboard */,
 				0B0E26FE1E5C916600C9F8CC /* Info.plist */,
-				0B69DCF31E5EC14800E647F0 /* WeatherCell.swift */,
 			);
 			path = WeatherForecast;
+			sourceTree = "<group>";
+		};
+		0B69DCF51E5ED77200E647F0 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				0B69DCF31E5EC14800E647F0 /* WeatherCell.swift */,
+			);
+			name = View;
 			sourceTree = "<group>";
 		};
 		0B9071C91E5DCF8F00A7CE05 /* Model */ = {

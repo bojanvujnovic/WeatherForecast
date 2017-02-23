@@ -31,7 +31,7 @@ class WeatherCell: UITableViewCell {
     
     func configureCell(forecast: Forecast) {
         self.weatherImage.image = UIImage(named: forecast.weatherType)
-        
+        self.dayLabel.text = forecast.date
         self.weatherTypeLabel.text = forecast.weatherType.capitalized
         self.highTempLabel.text = forecast.highTemp + " °C"
         self.lowTempLabel.text = forecast.lowTemp + " °C"

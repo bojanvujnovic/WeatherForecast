@@ -61,16 +61,27 @@ class Forecast {
             }
         }
         //Day value
-        if let day = weatherDict[JSONForecast.date] as? Int {
-            
+        if let date = weatherDict[JSONForecast.date] as? Double {
+            let unixConvertedDate = Date(timeIntervalSince1970: date)
+            print("unixConvertedDate = \(unixConvertedDate)")
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateStyle = .full
+            print("unixConvertedDate full = \(unixConvertedDate)")
+            dateFormatter.dateFormat = "EEEE"
+            print("unixConvertedDate EEEE  = \(unixConvertedDate)")
+            dateFormatter.timeStyle = .none
+            self._date = unixConvertedDate.dayOfTheWeek()            
         }
     }
-    
-    
-    
-    
-    
-    
         
+}
+
+extension Date {
+    
+    func dayOfTheWeek() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "EEEE"
+        return dateFormatter.string(from:  self)
+    }
 }
 
