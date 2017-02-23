@@ -39,25 +39,41 @@ class WeatherVC: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         self.locationManager.requestWhenInUseAuthorization()
         self.locationManager.startMonitoringSignificantLocationChanges()
         
+        
+        
         segment.selectedSegmentIndex = 1
         //Weather Manager
         self.weatherManager = WeatherManager()
         self.weatherManager.currentWeather = CurrentWeather()
-        self.weatherManager.currentWeather.downloadWeatherDetails(latitude: 51.50, longitude: 0.13) { [unowned self] (lat, long) in
-            self.weatherManager.downloadForecastData(table: self.tableView, days: WeatherAPI.days, lat: lat, long: long, completed: { [unowned self] in
-                //Setup UI to load downloaded data
-                DispatchQueue.main.async { [unowned self] in
-                    self.updateMainUI()                }
-                print("Downloaded Forecast for \(self.weatherManager.forecastsCount) days successfully.")
-            })
-            print("Downloaded Current Weather data  successfully.")
-        }
         
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+        self.locationAuthStatus()
+    }
+    
+    //CLLocation Authorization
+    func locationAuthStatus() {
+        if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
+            
+            currentLocation = locationManager.location
+            Location.sharedLocation.latitude = currentLocation.coordinate.latitude
+            Location.sharedLocation.longitude = currentLocation.coordinate.longitude
+            
+            self.weatherManager.currentWeather.downloadWeatherDetails(location: Location.sharedLocation) { [unowned self] (location) in
+                self.weatherManager.downloadForecastData(table: self.tableView, days: WeatherAPI.days, location: location, completed: { [unowned self] in
+                    //Setup UI to load downloaded data
+                    DispatchQueue.main.async { [unowned self] in
+                        self.updateMainUI()                }
+                    print("Downloaded Forecast for \(self.weatherManager.forecastsCount) days successfully.")                    
+                })
+                print("Downloaded Current Weather data  successfully.")
+            }
+        } else {
+            locationManager.requestWhenInUseAuthorization()
+            locationAuthStatus()
+        }
     }
     
     //Do not scroll Table View down when in top upmost position.
@@ -75,7 +91,8 @@ class WeatherVC: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         case 2: numberOfDays = WeatherManager.ForecastDuration.long.rawValue            
           default: numberOfDays = 0
         }
-        self.weatherManager.downloadForecastData(table: tableView, days: numberOfDays, lat: 44.83, long: 20.41) {
+        
+        self.weatherManager.downloadForecastData(table: tableView, days: numberOfDays, location: Location.sharedLocation) {
              print("Downloaded successfully forecast for \(self.weatherManager.forecastsCount) days.")
         }       
     }

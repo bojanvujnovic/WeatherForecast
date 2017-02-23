@@ -8,7 +8,7 @@
 
 import Foundation
 
-typealias DownloadComplete = (Double, Double) -> ()
+typealias DownloadComplete = (Location) -> ()
 typealias ForecastDownloadComplete = () -> ()
 
 struct WeatherAPI {
@@ -21,11 +21,15 @@ struct WeatherAPI {
     static let LON = "&lon="
     private static let APP_ID = "&appid="
     private static let API_Key = "b49d4b3427348cb2d8185b52bccd81b3"
-    let CURRENT_WEATHER_URL: (Double, Double) -> (String)  =  { (latitude, longitude) in
-        return "\(baseURL)\(weather)\(LAT)\(latitude)\(LON)\(longitude)\(APP_ID)\(API_Key)" }
+    let CURRENT_WEATHER_URL: (Location) -> (String)  =  { (location) in
+        let lat = location.latitude.roundTo(places: 3)
+        let long = location.longitude.roundTo(places: 3)
+        return "\(baseURL)\(weather)\(LAT)\(lat)\(LON)\(long)\(APP_ID)\(API_Key)" }
     
-    let FORECAST_WEATHER_URL: (Int,Double, Double) -> (String) = { (days, latitude, longitude ) in
-        return "\(baseURL)\(forecast)\(LAT)\(latitude)\(LON)\(longitude)\(CNT)\(days)\(APP_ID)\(API_Key)" }
+    let FORECAST_WEATHER_URL: (Int,Location) -> (String) = { (days, location) in
+        let lat = location.latitude.roundTo(places: 3)
+        let long = location.longitude.roundTo(places: 3)
+        return "\(baseURL)\(forecast)\(LAT)\(lat)\(LON)\(long)\(CNT)\(days)\(APP_ID)\(API_Key)" }
     
 }
 

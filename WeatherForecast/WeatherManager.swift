@@ -51,18 +51,18 @@ class WeatherManager {
         }
     }
     
-    func downloadForecastData(table: UITableView, days: Int, lat: Double, long: Double, completed: @escaping ForecastDownloadComplete)  {
+    //Downloads Forecast Data for a number of days and coordinates
+    func downloadForecastData(table: UITableView, days: Int, location: Location, completed: @escaping ForecastDownloadComplete)  {
         //Downloading forecast weather data for TableView
         //Alamofire download
         let weatherAPI = WeatherAPI()
-        if let forecastWeatherURL = URL(string: weatherAPI.FORECAST_WEATHER_URL(days, lat, long))  {
+        if let forecastWeatherURL = URL(string: weatherAPI.FORECAST_WEATHER_URL(days, location))  {
             Alamofire.request(forecastWeatherURL, method: HTTPMethod.get).responseJSON(completionHandler: {  [unowned self] (response) in
                 let result = response.result
                 //Whole JSON Dictionary
                 if let dictionary = result.value as? Dictionary<String, AnyObject> {
                     //List of days
-                    if let list = dictionary[JSONForecast.list] as? [Dictionary<String, AnyObject>] {
-                        
+                    if let list = dictionary[JSONForecast.list] as? [Dictionary<String, AnyObject>] {                        
                         for object in list {
                             //From Object in the List we parse parameters of the class Forecast
                             self.forecast = Forecast(weatherDict: object)
@@ -72,9 +72,10 @@ class WeatherManager {
                         self.removeTheFirstForecast()
                         DispatchQueue.main.async {
                             table.reloadData()
+                            
                         }
                     }
-                }
+                }                
                 completed()
             })
         }

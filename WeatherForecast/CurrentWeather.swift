@@ -46,13 +46,12 @@ class CurrentWeather {
         }
         return _currentTemp
     }
-    
    
-    
-    func downloadWeatherDetails(latitude: Double, longitude: Double, completed: @escaping DownloadComplete)  {
+    //Downloads Current Weather data for coordinates
+    func downloadWeatherDetails(location: Location, completed: @escaping DownloadComplete)  {
          //Alamofire download
         let weatherAPI = WeatherAPI()
-        if let currentWeatherURL = URL(string: weatherAPI.CURRENT_WEATHER_URL(latitude, longitude)) {
+        if let currentWeatherURL = URL(string: weatherAPI.CURRENT_WEATHER_URL(location)) {
             Alamofire.request(currentWeatherURL, method: HTTPMethod.get).responseJSON(completionHandler: { [unowned self] (response) in
                let result = response.result
                 //Whole JSON Dictionary
@@ -75,11 +74,9 @@ class CurrentWeather {
                         }
                     }
                 }
-                completed(latitude, longitude)
-            })
-            
-            
-            
+                
+                completed(location)
+            })           
         }
     }
 }
