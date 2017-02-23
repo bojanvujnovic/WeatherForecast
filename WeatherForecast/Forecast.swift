@@ -40,10 +40,7 @@ class Forecast {
         }
         return _lowTemp
     }
-    init() {
         
-    }
-    
     init(weatherDict: [String: AnyObject]) {
         //Temperature values
         if let temp = weatherDict[JSONForecast.temp] as? Dictionary<String, AnyObject> {
@@ -63,12 +60,9 @@ class Forecast {
         //Day value
         if let date = weatherDict[JSONForecast.date] as? Double {
             let unixConvertedDate = Date(timeIntervalSince1970: date)
-            print("unixConvertedDate = \(unixConvertedDate)")
             let dateFormatter = DateFormatter()
             dateFormatter.dateStyle = .full
-            print("unixConvertedDate full = \(unixConvertedDate)")
             dateFormatter.dateFormat = "EEEE"
-            print("unixConvertedDate EEEE  = \(unixConvertedDate)")
             dateFormatter.timeStyle = .none
             self._date = unixConvertedDate.dayOfTheWeek()            
         }

@@ -30,8 +30,7 @@ class WeatherVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         self.tableView.dataSource = self
         self.tableView.delegate = self
         
-        currentWeather = CurrentWeather()
-        forecast = Forecast()
+        currentWeather = CurrentWeather()        
         currentWeather.downloadWeatherDetails {
             //Setup UI to load downloaded data
             DispatchQueue.main.async { [unowned self] in
