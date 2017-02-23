@@ -10,10 +10,10 @@ import UIKit
 import Alamofire
 
 class Forecast {
-    var _date: String!
-    var _weatherType: String!
-    var _highTemp: String!
-    var _lowTemp: String!
+    private var _date: String!
+    private var _weatherType: String!
+    private var _highTemp: String!
+    private var _lowTemp: String!
    
     
     var date: String {
@@ -45,14 +45,31 @@ class Forecast {
     }
     
     init(weatherDict: [String: AnyObject]) {
+        //Temperature values
         if let temp = weatherDict[JSONForecast.temp] as? Dictionary<String, AnyObject> {
-            if let min = temp[JSONForecast.min] as? Double {
+            if let min = temp[JSONForecast.min] as? Double, let max = temp[JSONForecast.max] as? Double {
                 let minCelsius = min.convertKelvinToCelsius(kelvin: min)                
                 self._lowTemp = "\(minCelsius.roundTo(places: 1))"
-                print(self._lowTemp)
+                let maxCelsius = max.convertKelvinToCelsius(kelvin: max)
+                self._highTemp = "\(maxCelsius.roundTo(places: 1))"
             }
         }
+        //Weather type value
+        if let weather = weatherDict[JSONForecast.weather] as? [Dictionary<String, AnyObject>] {
+            if let weatherType = weather[0][JSONForecast.main] as? String {
+                self._weatherType = weatherType
+            }
+        }
+        //Day value
+        if let day = weatherDict[JSONForecast.date] as? Int {
+            
+        }
     }
+    
+    
+    
+    
+    
     
         
 }

@@ -33,9 +33,9 @@ struct JSONCurrent {
     static let base = "base"
     
     static let main = "main"
-      static let currentTemp = "temp"
-      static let highTemp = "temp_max"
-      static let lowTemp = "temp_min"
+       static let currentTemp = "temp"
+       static let highTemp = "temp_max"
+       static let lowTemp = "temp_min"
     
     static let wind = "wind"
     static let rain = "rain"
@@ -46,11 +46,14 @@ struct JSONCurrent {
 
 struct JSONForecast {
     static let list = "list"
-      static let temp = "temp"
-        static let min = "min"
-        static let max = "max"
-    static let city = "city"
-    static let cnt = 10
+       static let temp = "temp"
+          static let min = "min"
+          static let max = "max"
+       static let city = "city"
+       static let cnt = 10
+       static let weather = "weather"
+       static let main = "main"
+       static let date = "dt"
     
     
     

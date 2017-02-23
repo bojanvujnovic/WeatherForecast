@@ -34,7 +34,9 @@ class WeatherVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         forecast = Forecast()
         currentWeather.downloadWeatherDetails {
             //Setup UI to load downloaded data
+            DispatchQueue.main.async { [unowned self] in
                 self.updateMainUI()
+            }
             print("Downloaded Current Data successfully.")
         }
         self.downloadForecastData { 
@@ -52,15 +54,19 @@ class WeatherVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         //Downloading forecast weather data for TableView
         //Alamofire download
         if let currentWeatherURL = URL(string: WeatherAPI.FORECAST_WEATHER_URL) {
-            Alamofire.request(currentWeatherURL, method: HTTPMethod.get).responseJSON(completionHandler: {  (response) in
+            Alamofire.request(currentWeatherURL, method: HTTPMethod.get).responseJSON(completionHandler: {  [unowned self] (response) in
                 let result = response.result
                 //Whole JSON Dictionary
                 if let dictionary = result.value as? Dictionary<String, AnyObject> {
                     //List of days
                     if let list = dictionary[JSONForecast.list] as? [Dictionary<String, AnyObject>] {
-                        for objects in list {
-                            let forecast = Forecast(weatherDict: objects)
+                        for object in list {
+                            //From Object in the List we parse parameters of the class Forecast
+                            let forecast = Forecast(weatherDict: object)
                             self.forecasts.append(forecast)
+                            DispatchQueue.main.async { [unowned self] in
+                                self.tableView.reloadData()
+                            }
                         }
                     }
                 }
@@ -72,12 +78,18 @@ class WeatherVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     //TableView data source and delegate methods
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 6
+        return forecasts.count > 0 ? forecasts.count : 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "weatherCell", for: indexPath)
-        return cell
+        
+        if let cell = tableView.dequeueReusableCell(withIdentifier: "weatherCell", for: indexPath) as? WeatherCell {
+            let dayForecast = forecasts[indexPath.row]
+            cell.configureCell(forecast: dayForecast)
+            return cell
+        } else {
+            return UITableViewCell()
+        }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
