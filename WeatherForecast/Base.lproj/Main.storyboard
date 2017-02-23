@@ -200,14 +200,14 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="132" y="-222.63868065967017"/>
+            <point key="canvasLocation" x="-312" y="-224"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="v1u-Pw-xow">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Tin-2b-TvS" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="qTO-gQ-9KQ">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="qTO-gQ-9KQ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>

@@ -16,14 +16,15 @@ struct WeatherAPI {
     private static let forecast = "/forecast/daily?"
     private static let CNT = "&cnt="
     static let days = 11
-    static let LATITUDE = "lat="
-    static let LONGITUDE = "&lon="
+    static let LAT = "lat="
+    static let LON = "&lon="
     private static let APP_ID = "&appid="
     private static let API_Key = "b49d4b3427348cb2d8185b52bccd81b3"
-    static let CURRENT_WEATHER_URL = "\(baseURL)\(weather)\(LATITUDE)44.83\(LONGITUDE)20.41\(APP_ID)\(API_Key)"
+    let CURRENT_WEATHER_URL: (Double, Double) -> (String)  =  { (latitude, longitude) in
+        return "\(baseURL)\(weather)\(LAT)\(latitude)\(LON)\(longitude)\(APP_ID)\(API_Key)" }
     
-    let FORECAST_WEATHER_URL: (Int) -> (String) = { (numberOfdays: Int ) in
-        return "\(baseURL)\(forecast)\(LATITUDE)44.83\(LONGITUDE)20.41\(CNT)\(numberOfdays)\(APP_ID)\(API_Key)" }
+    let FORECAST_WEATHER_URL: (Int,Double, Double) -> (String) = { (days, latitude, longitude ) in
+        return "\(baseURL)\(forecast)\(LAT)\(latitude)\(LON)\(longitude)\(CNT)\(days)\(APP_ID)\(API_Key)" }
     
 }
 

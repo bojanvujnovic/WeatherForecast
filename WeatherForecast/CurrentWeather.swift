@@ -49,9 +49,10 @@ class CurrentWeather {
     
    
     
-    func downloadWeatherDetails(completed: @escaping DownloadComplete)  {
+    func downloadWeatherDetails(latitude: Double, longitude: Double, completed: @escaping DownloadComplete)  {
          //Alamofire download
-        if let currentWeatherURL = URL(string: WeatherAPI.CURRENT_WEATHER_URL) {
+        let weatherAPI = WeatherAPI()
+        if let currentWeatherURL = URL(string: weatherAPI.CURRENT_WEATHER_URL(latitude, longitude)) {
             Alamofire.request(currentWeatherURL, method: HTTPMethod.get).responseJSON(completionHandler: { [unowned self] (response) in
                let result = response.result
                 //Whole JSON Dictionary
