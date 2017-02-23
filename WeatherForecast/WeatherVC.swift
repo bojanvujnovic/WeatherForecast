@@ -30,17 +30,18 @@ class WeatherVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         self.tableView.dataSource = self
         self.tableView.delegate = self
         
-        currentWeather = CurrentWeather()        
-        currentWeather.downloadWeatherDetails {
-            //Setup UI to load downloaded data
-            DispatchQueue.main.async { [unowned self] in
-                self.updateMainUI()
-            }
+        currentWeather = CurrentWeather()
+        currentWeather.downloadWeatherDetails { [unowned self] in
+            self.downloadForecastData {
+                   //Setup UI to load downloaded data
+                   DispatchQueue.main.async { [unowned self] in
+                        self.updateMainUI()
+                    }
+                print("Downloaded Forecast Data successfully.")
+              }
             print("Downloaded Current Data successfully.")
         }
-        self.downloadForecastData { 
-            print("Downloaded Forecast Data successfully.")
-        }
+        
        
     }
     
@@ -87,7 +88,7 @@ class WeatherVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
             cell.configureCell(forecast: dayForecast)
             return cell
         } else {
-            return UITableViewCell()
+            return WeatherCell()
         }
     }
     

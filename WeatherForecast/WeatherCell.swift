@@ -23,12 +23,7 @@ class WeatherCell: UITableViewCell {
         // Initialization code
     }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-    
+        
     func configureCell(forecast: Forecast) {
         self.weatherImage.image = UIImage(named: forecast.weatherType)
         self.dayLabel.text = forecast.date
