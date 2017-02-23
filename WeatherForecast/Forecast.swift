@@ -14,7 +14,7 @@ class Forecast {
     private var _weatherType: String!
     private var _highTemp: String!
     private var _lowTemp: String!
-   
+    
     
     var date: String {
         if _date == nil {

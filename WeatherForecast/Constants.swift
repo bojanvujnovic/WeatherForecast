@@ -22,7 +22,8 @@ struct WeatherAPI {
     private static let API_Key = "b49d4b3427348cb2d8185b52bccd81b3"
     static let CURRENT_WEATHER_URL = "\(baseURL)\(weather)\(LATITUDE)44.83\(LONGITUDE)20.41\(APP_ID)\(API_Key)"
     
-     static let FORECAST_WEATHER_URL = "\(baseURL)\(forecast)\(LATITUDE)44.83\(LONGITUDE)20.41\(CNT)\(days)\(APP_ID)\(API_Key)"
+    let FORECAST_WEATHER_URL: (Int) -> (String) = { (numberOfdays: Int ) in
+        return "\(baseURL)\(forecast)\(LATITUDE)44.83\(LONGITUDE)20.41\(CNT)\(numberOfdays)\(APP_ID)\(API_Key)" }
     
 }
 

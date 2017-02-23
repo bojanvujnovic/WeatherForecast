@@ -11,7 +11,7 @@ import Alamofire
 import Dispatch
 
 
-class WeatherVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class WeatherVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate {
     
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var currentTempLabel: UILabel!
@@ -20,29 +20,29 @@ class WeatherVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     @IBOutlet weak var currentWeatherLabel: UILabel!
     
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var segment: UISegmentedControl!
     
-    var currentWeather: CurrentWeather!
-    var forecast: Forecast!
-    var forecasts = [Forecast]()
+    
+    var weatherManager: WeatherManager!
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.dataSource = self
         self.tableView.delegate = self
         
-        currentWeather = CurrentWeather()
-        currentWeather.downloadWeatherDetails { [unowned self] in
-            self.downloadForecastData {
-                   //Setup UI to load downloaded data
-                   DispatchQueue.main.async { [unowned self] in
-                        self.updateMainUI()
-                    }
-                print("Downloaded Forecast Data successfully.")
-              }
-            print("Downloaded Current Data successfully.")
+        segment.selectedSegmentIndex = 1
+        self.weatherManager = WeatherManager()
+        self.weatherManager.currentWeather = CurrentWeather()
+        self.weatherManager.currentWeather.downloadWeatherDetails { [unowned self] in
+             self.downloadForecastData(numberOfDays: WeatherAPI.days , completed: {
+                //Setup UI to load downloaded data
+                DispatchQueue.main.async { [unowned self] in
+                    self.updateMainUI()                }
+                print("Downloaded Forecast for \(self.weatherManager.forecastsCount) days successfully.")
+             })
+             print("Downloaded Current Data successfully.")
         }
-        
-       
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -50,23 +50,50 @@ class WeatherVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         
     }
     
-    func downloadForecastData(completed: @escaping DownloadComplete)  {
+    //Do not scroll Table View down when in top upmost position.
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        scrollView.bounces = (scrollView.contentOffset.y > 0)
+    }
+    
+    
+    
+    
+    @IBAction func segmentPressed(_ sender: UISegmentedControl) {
+        weatherManager.forecasts = []
+        var numberOfDays: Int
+        switch sender.selectedSegmentIndex {
+        case 0: numberOfDays = WeatherManager.ForecastDuration.short.rawValue
+        case 1: numberOfDays = WeatherManager.ForecastDuration.medium.rawValue
+        case 2: numberOfDays = WeatherManager.ForecastDuration.long.rawValue            
+          default: numberOfDays = 0
+        }
+        self.downloadForecastData(numberOfDays: numberOfDays) {
+            
+            print("Downloaded successfully forecast for \(self.weatherManager.forecastsCount) days.")
+        }
+        
+    }
+    
+    
+    func downloadForecastData( numberOfDays: Int, completed: @escaping DownloadComplete)  {
         //Downloading forecast weather data for TableView
         //Alamofire download
-        if let currentWeatherURL = URL(string: WeatherAPI.FORECAST_WEATHER_URL) {
-            Alamofire.request(currentWeatherURL, method: HTTPMethod.get).responseJSON(completionHandler: {  [unowned self] (response) in
+        let weatherAPI = WeatherAPI()
+        if let forecastWeatherURL = URL(string: weatherAPI.FORECAST_WEATHER_URL(numberOfDays))  {
+            Alamofire.request(forecastWeatherURL, method: HTTPMethod.get).responseJSON(completionHandler: {  [unowned self] (response) in
                 let result = response.result
                 //Whole JSON Dictionary
                 if let dictionary = result.value as? Dictionary<String, AnyObject> {
                     //List of days
                     if let list = dictionary[JSONForecast.list] as? [Dictionary<String, AnyObject>] {
+                        
                         for object in list {
                             //From Object in the List we parse parameters of the class Forecast
-                            let forecast = Forecast(weatherDict: object)
-                            self.forecasts.append(forecast)
+                            self.weatherManager.forecast = Forecast(weatherDict: object)
+                            self.weatherManager.addForecast(forecast: self.weatherManager.forecast)
                         }
                         //We do not need a forecast for the current date
-                        self.forecasts.remove(at: 0)
+                        self.weatherManager.removeTheFirstForecast()
                         DispatchQueue.main.async { [unowned self] in
                             self.tableView.reloadData()
                         }
@@ -80,13 +107,13 @@ class WeatherVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     //TableView data source and delegate methods
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return forecasts.count > 0 ? forecasts.count : 0
+        return weatherManager.forecastsCount
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if let cell = tableView.dequeueReusableCell(withIdentifier: "weatherCell", for: indexPath) as? WeatherCell {
-            let dayForecast = forecasts[indexPath.row]
+            let dayForecast = weatherManager.forecasts[indexPath.row]
             cell.configureCell(forecast: dayForecast)
             return cell
         } else {
@@ -99,11 +126,11 @@ class WeatherVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     }
     
     func updateMainUI()  {
-        dateLabel.text = currentWeather.date
-        currentTempLabel.text = "\(currentWeather.currentTemp) °C"
-        currentWeatherLabel.text = currentWeather.weatherType
-        locationLabel.text = currentWeather.cityName
-        currentWeatherImage.image = UIImage(named: currentWeather.weatherType)
+        dateLabel.text = weatherManager.currentWeather.date
+        currentTempLabel.text = "\(weatherManager.currentWeather.currentTemp) °C"
+        currentWeatherLabel.text = weatherManager.currentWeather.weatherType
+        locationLabel.text = weatherManager.currentWeather.cityName
+        currentWeatherImage.image = UIImage(named: weatherManager.currentWeather.weatherType)
     }
 
 }
