@@ -64,9 +64,11 @@ class WeatherVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
                             //From Object in the List we parse parameters of the class Forecast
                             let forecast = Forecast(weatherDict: object)
                             self.forecasts.append(forecast)
-                            DispatchQueue.main.async { [unowned self] in
-                                self.tableView.reloadData()
-                            }
+                        }
+                        //We do not need a forecast for the current date
+                        self.forecasts.remove(at: 0)
+                        DispatchQueue.main.async { [unowned self] in
+                            self.tableView.reloadData()
                         }
                     }
                 }

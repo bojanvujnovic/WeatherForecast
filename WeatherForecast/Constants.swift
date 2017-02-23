@@ -15,7 +15,7 @@ struct WeatherAPI {
     private static let weather = "/weather?"
     private static let forecast = "/forecast/daily?"
     private static let CNT = "&cnt="
-    static let days = 10
+    static let days = 11
     static let LATITUDE = "lat="
     static let LONGITUDE = "&lon="
     private static let APP_ID = "&appid="
@@ -50,7 +50,7 @@ struct JSONForecast {
           static let min = "min"
           static let max = "max"
        static let city = "city"
-       static let cnt = 10
+       static let cnt = 11
        static let weather = "weather"
        static let main = "main"
        static let date = "dt"
